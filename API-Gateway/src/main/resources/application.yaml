@@ -1,3 +1,17 @@
 spring:
   application:
     name: API-Gateway
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+      discovery:
+        enabled: true
+        register: true
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
+
+  server:
+    port: 8000
