@@ -1,0 +1,12 @@
+Dateien erstellen
+    - schreiben
+    - lesen
+    - bearbeiten
+-------------------------
+In cloud speicher hochladen und speichern
+    - upload
+    - update
+    - delete
+
+Dokumente in eigenem ui anzeigen und öffnen können.
+Auch download auf lokale Maschiene soll möglich sein.
