@@ -1,6 +1,8 @@
 spring:
   application:
     name: Documentation-Service
+  config:
+    import: optional:file:../env.properties
 
   datasource:
     url: jdbc:mysql://localhost:3306/ShopShare
@@ -61,5 +63,7 @@ management:
 
 storage:
   s3:
-    bucket: documentation-service-bucket
-    region: eu-central-1
+    access-key: ${AWS_ACCESS_KEY_ID}
+    secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region: ${AWS_REGION}
+    bucket: s3-bucket-doc-service
