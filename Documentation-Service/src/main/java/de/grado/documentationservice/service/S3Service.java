@@ -5,9 +5,11 @@ import de.grado.documentationservice.config.S3Properties;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -72,7 +74,30 @@ public class S3Service
                         .bucket(s3Properties.getBucket())
                         .key(folderName)
                         .build(),
-                RequestBody.empty();
+                RequestBody.empty()
         );
+    }
+
+    public void downloadFile(String fileName)
+    {
+        Path target = Path.of("downloads", fileName);
+
+        s3Client.getObject(
+                GetObjectRequest.builder()
+                        .bucket(s3Properties.getBucket())
+                        .key(fileName)
+                        .build(),
+                ResponseTransformer.toFile(target)
+        );
+    }
+
+    public void deleteFolder(String folderName)
+    {
+        DeleteObjectRequest request =
+                DeleteObjectRequest.builder()
+                        .bucket(s3Properties.getBucket())
+                        .key(folderName)
+                        .build();
+        s3Client.deleteObject(request);
     }
 }

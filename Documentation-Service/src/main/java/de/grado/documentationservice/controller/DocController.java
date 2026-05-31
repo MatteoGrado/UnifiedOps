@@ -3,10 +3,10 @@ package de.grado.documentationservice.controller;
 import de.grado.documentationservice.service.S3Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,6 @@ import java.util.List;
 public class DocController
 {
     private final S3Service s3Service;
-    private final S3Client s3Client;
 
     @GetMapping("/getFiles")
     public List<String> getFiles()
@@ -37,6 +36,17 @@ public class DocController
                 .body(file);
     }
 
+    @GetMapping("/download/file/{fileName}")
+    public ResponseEntity<byte[]> download(@PathVariable String fileName) {
+
+        byte[] file = s3Service.getFile(fileName);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + fileName + "\"")
+                .body(file);
+    }
+
     @PostMapping("/uploadFile/{filename}")
     public void uploadFile(@RequestParam MultipartFile file) throws IOException
     {
@@ -50,7 +60,14 @@ public class DocController
     @PostMapping("/create/folder/{folderName}")
     public void createFolder(@PathVariable String folderName)
     {
-        // Requires filname input in frontend
+        // Requires filename input in frontend
         s3Service.createFolder(folderName);
+    }
+
+    @DeleteMapping("/dlete/folder/{folderName}")
+    public void deleteFolder(@PathVariable String folderName)
+    {
+        //Requires folderName from frontend
+        s3Service.deleteFolder(folderName);
     }
 }
