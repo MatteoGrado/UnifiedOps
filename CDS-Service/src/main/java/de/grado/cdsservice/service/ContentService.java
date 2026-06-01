@@ -1,13 +1,13 @@
 package de.grado.cdsservice.service;
 
 import de.grado.cdsservice.config.S3Properties;
+import io.sentry.Sentry;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
-import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.util.List;
 
@@ -32,7 +32,19 @@ public class ContentService
                 .toList();
     }
 
-    public void getFile(String fileName)
+    public byte[] getFile(String fileName) throws Exception
     {
+        try {
+            ResponseInputStream<GetObjectResponse> response = s3Client.getObject(
+                    GetObjectRequest.builder()
+                            .bucket(s3Properties.getBucket())
+                            .key(fileName)
+                            .build());
+
+            return response.readAllBytes();
+        } catch (Exception e) {
+            Sentry.captureException(e);
+            throw new Exception("AWS Object not found!");
+        }
     }
 }
