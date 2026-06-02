@@ -4,10 +4,8 @@ import de.grado.cdsservice.service.ContentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,5 +31,20 @@ public class ContentController
         contentService.downloadFile(filename);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload/video")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, String filename) throws Exception
+    {
+        //Needs file and filename
+        contentService.uploadFile(filename, file);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/file/{filename}")
+    public void deleteFile(@PathVariable String filename) throws Exception
+    {
+        //Requires filename from frontend
+        contentService.deleteVideo(filename);
     }
 }
