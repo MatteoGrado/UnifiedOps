@@ -32,7 +32,7 @@ public class ContentService
                 .toList();
     }
 
-    public byte[] getFile(String fileName) throws Exception
+    public byte[] downloadFile(String fileName) throws Exception
     {
         try {
             ResponseInputStream<GetObjectResponse> response = s3Client.getObject(
@@ -47,4 +47,6 @@ public class ContentService
             throw new Exception("AWS Object not found!");
         }
     }
+
+    //
 }

@@ -26,9 +26,12 @@ public class ContentController
         return ResponseEntity.ok(contentService.getFiles());
     }
 
-    @GetMapping("/list/videos/{filename}")
-    public ResponseEntity<byte[]> getFile(@PathVariable String filename)
+    @GetMapping("/download/videos/{filename}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String filename) throws Exception
     {
-        //Nees filename from frontend
-        contentService.getFile(filename);    }
+        //Needs filename from frontend
+        contentService.downloadFile(filename);
+
+        return ResponseEntity.ok().build();
+    }
 }
