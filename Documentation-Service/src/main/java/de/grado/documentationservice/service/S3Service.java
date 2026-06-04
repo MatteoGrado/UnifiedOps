@@ -1,9 +1,10 @@
 package de.grado.documentationservice.service;
 
-import de.grado.documentationservice.config.S3Config;
 import de.grado.documentationservice.config.S3Properties;
+import io.sentry.Sentry;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class S3Service
 {
-    private final S3Config s3Config;
     private final S3Properties s3Properties;
     private final S3Client s3Client;
 
@@ -33,15 +33,21 @@ public class S3Service
 
     public List<String> listFiles()
     {
-        ListObjectsV2Response response = s3Client.listObjectsV2(
-                ListObjectsV2Request.builder()
-                        .bucket(s3Properties.getBucket())
-                        .build());
+        try {
+            ListObjectsV2Response response = s3Client.listObjectsV2(
+                    ListObjectsV2Request.builder()
+                            .bucket(s3Properties.getBucket())
+                            .build());
 
-        return response.contents()
-                .stream()
-                .map(S3Object::key)
-                .toList();
+            return response.contents()
+                    .stream()
+                    .map(S3Object::key)
+                    .toList();
+        } catch (SdkClientException e) {
+            Sentry.captureException(e);
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     public byte[] getFile(String filename)

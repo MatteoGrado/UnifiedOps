@@ -1,34 +1,39 @@
 spring:
   application:
     name: Documentation-Service
+
   config:
-    import: optional:file:../env.properties
+    import:
+      - optional:file:../env.properties
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ShopShare
-    username: DB_Admin
-    password: Sumafelo!
+    url: ${DB_URL:jdbc:mysql://localhost:3306/company}
+    username: ${DB_USERNAME:DB_Admin}
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        boot:
+          allow_jdbc_metadata_access: false
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: admin
-    password: admin
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:admin}
 
   mail:
-    host: localhost
-    port: 1025
-    username:
-    password:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
@@ -38,8 +43,8 @@ spring:
 
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
       discovery:
         enabled: true
         register: true
@@ -49,7 +54,7 @@ spring:
         prefer-ip-address: true
 
 server:
-  port: 8082
+  port: ${SERVER_PORT:8082}
 
 management:
   endpoints:
@@ -61,9 +66,17 @@ management:
     health:
       show-details: always
 
+  health:
+    db:
+      enabled: ${MANAGEMENT_HEALTH_DB_ENABLED:false}
+    mail:
+      enabled: ${MANAGEMENT_HEALTH_MAIL_ENABLED:false}
+    rabbit:
+      enabled: ${MANAGEMENT_HEALTH_RABBIT_ENABLED:false}
+
 storage:
   s3:
-    access-key: ${AWS_ACCESS_KEY_ID}
-    secret-key: ${AWS_SECRET_ACCESS_KEY}
-    region: ${AWS_REGION}
-    bucket: s3-bucket-doc-service
+    access-key: ${S3_ACCESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    region: ${AWS_REGION:eu-north-1}
+    bucket: ${S3_BUCKET:s3-bucket-doc-service}

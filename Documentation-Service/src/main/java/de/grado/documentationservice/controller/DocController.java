@@ -1,6 +1,8 @@
 package de.grado.documentationservice.controller;
 
+import de.grado.documentationservice.config.S3Properties;
 import de.grado.documentationservice.service.S3Service;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,7 @@ import java.util.List;
 public class DocController
 {
     private final S3Service s3Service;
+    private final S3Properties s3Properties;
 
     @GetMapping("/getFiles")
     public List<String> getFiles()
@@ -40,7 +43,7 @@ public class DocController
     public ResponseEntity<byte[]> download(@PathVariable String fileName) {
 
         byte[] file = s3Service.getFile(fileName);
-
+        // TODO: Put downloaded file into download folder
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + fileName + "\"")

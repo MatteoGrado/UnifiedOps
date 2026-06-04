@@ -1,13 +1,15 @@
 spring:
   application:
     name: Rechnungswesen-Service
+
   config:
-    import: optional:file:../env.properties
+    import:
+    - optional:file:../env.properties
 
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/ShopShare}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/company}
     username: ${DB_USERNAME:DB_Admin}
-    password: ${DB_PASSWORD:}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -65,5 +67,5 @@ storage:
   s3:
     access-key: ${AWS_ACCESS_KEY_ID}
     secret-key: ${AWS_SECRET_ACCESS_KEY}
-    region: ${AWS_REGION}
-    bucket: ${AWS_S3_BUCKET:s3-bucket-doc-service}
+    region: ${AWS_REGION:eu-north-1}
+    bucket: ${S3_BUCKET:s3-bucket-doc-service}
