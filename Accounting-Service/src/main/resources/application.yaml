@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: Accounting-Service
+    config:
+      import: optional:file:../env.properties
+
+      datasource:
+        url: jdbc:mysql://localhost:3306/ShopShare
+        username: DB_Admin
+        password: Sumafelo!
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        properties:
+          hibernate:
+            format_sql: true
+
+      rabbitmq:
+        host: localhost
+        port: 5672
+        username: admin
+        password: admin
+
+      mail:
+        host: localhost
+        port: 1025
+        username:
+        password:
+        properties:
+          mail:
+            smtp:
+              auth: false
+              starttls:
+                enable: false
+
+      cloud:
+        consul:
+          host: localhost
+          port: 8500
+          discovery:
+            enabled: true
+            register: true
+            service-name: ${spring.application.name}
+            health-check-path: /actuator/health
+            health-check-interval: 10s
+            prefer-ip-address: true
+
+    server:
+      port: 8081
+
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info
+
+      endpoint:
+        health:
+          show-details: always
+
+    storage:
+      s3:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+        region: ${AWS_REGION}
+        bucket: s3-bucket-doc-service
