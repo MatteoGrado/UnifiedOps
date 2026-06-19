@@ -1,5 +1,6 @@
 package de.grado.accountingservice.model;
 
+import de.grado.accountingservice.dto.AccountType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,8 @@ public class JournalEntryLine
     private String accountNumber;
 
     private String accountName;
+
+    private AccountType accountType;
 
     private BigDecimal debit;
 

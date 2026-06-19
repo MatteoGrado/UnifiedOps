@@ -29,11 +29,26 @@ public class JournalEntry
     @Enumerated(EnumType.STRING)
     private JournalEntryStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "period_id", nullable = false)
+    private Period period;
+
     @OneToMany(
             mappedBy = "journalEntry",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-
     private List<JournalEntryLine> lines = new ArrayList<>();
+
+    public void addLine(JournalEntryLine line)
+    {
+        lines.add(line);
+        line.setJournalEntry(this);
+    }
+
+    public void removeLine(JournalEntryLine line)
+    {
+        lines.remove(line);
+        line.setJournalEntry(null);
+    }
 }
