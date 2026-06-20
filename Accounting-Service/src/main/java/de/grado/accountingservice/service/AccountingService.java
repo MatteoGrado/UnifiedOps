@@ -3,6 +3,7 @@ package de.grado.accountingservice.service;
 import de.grado.accountingservice.dto.InvoiceStatus;
 import de.grado.accountingservice.dto.JournalEntryLineRequest;
 import de.grado.accountingservice.dto.JournalEntryRequest;
+import de.grado.accountingservice.dto.KickOfPaymentEvent;
 import de.grado.accountingservice.model.Invoice;
 import de.grado.accountingservice.model.JournalEntry;
 import de.grado.accountingservice.model.JournalEntryLine;
@@ -11,6 +12,7 @@ import de.grado.accountingservice.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,9 +24,9 @@ public class AccountingService
     private final AccountRepository accountRepository;
     private final InvoiceRepository invoiceRepository;
     private final JournalEntryRepository journalEntryRepository;
-    private final JournalEntryLineRepository journalEntryLineRepository;
+    private final RabbitTemplate rabbitTemplate;
 
-    public JournalEntry createJournalEntry(Invoice invoice, JournalEntryRequest request)
+    public JournalEntry createJournalEntry(JournalEntryRequest request)
     {
         Period period = periodService.getPostingPeriod(request.getBookingDate());
 
@@ -48,7 +50,7 @@ public class AccountingService
         return journalEntryRepository.save(journalEntry);
     }
 
-    private void validateStatus(String invoiceNumber)
+    public void validateStatus(String invoiceNumber)
     {
         Invoice invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber)
                 .orElseThrow(() ->
@@ -60,5 +62,19 @@ public class AccountingService
             throw new IllegalStateException(
                     "Invoice with number " + invoiceNumber + " isn't approved");
         }
+    }
+
+    public void kickOfPayment(JournalEntryRequest request)
+    {
+        KickOfPaymentEvent event = new KickOfPaymentEvent(
+                request.getBookingDate(),
+                request.getLines()
+        );
+
+        rabbitTemplate.convertAndSend(
+                "accounting.exchange",
+                "accounting.routing.key",
+                event
+        );
     }
 }
