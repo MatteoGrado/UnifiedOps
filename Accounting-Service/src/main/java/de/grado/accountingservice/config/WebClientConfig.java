@@ -1,4 +1,4 @@
-package de.grado.documentationservice.config;
+package de.grado.accountingservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -8,6 +8,7 @@ public class WebClientConfig
     @Bean
     public WebClient webClient(WebClient.Builder builder)
     {
-        return builder.build();
+        return builder
+                .build();
     }
 }
