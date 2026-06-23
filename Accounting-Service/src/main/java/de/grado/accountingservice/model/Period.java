@@ -15,7 +15,10 @@ public class Period
     @GeneratedValue
     private Long id;
 
+    @Column(name = "period_year")
     private int year;
+
+    @Column(name = "period_month")
     private int month;
 
     @Enumerated(EnumType.STRING)

@@ -1,8 +1,8 @@
 package de.grado.accountingservice.controller;
 
 import de.grado.accountingservice.dto.CreateInvoiceRequest;
+import de.grado.accountingservice.dto.CustomerQueue;
 import de.grado.accountingservice.service.CreateOutboundInvoiceService;
-import de.grado.accountingservice.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +19,8 @@ public class CreateInvoiceController
     private final CreateOutboundInvoiceService createOutboundInvoiceService;
 
     @PostMapping("/create/invoice")
-    public void createInvoice(@RequestBody CreateInvoiceRequest createInvoiceRequest)
+    public void createInvoice(@RequestBody CreateInvoiceRequest request, CustomerQueue queue)
     {
+        createOutboundInvoiceService.createInvoice(request, queue);
     }
 }

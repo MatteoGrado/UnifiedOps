@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Rechnung</title>
-    <link rel="stylesheet" th:href="@{./OutboundInvoice.css}">
+    <link rel="stylesheet" th:href="@{../static/OutboundInvoice.css}">
 </head>
 <body>
 
@@ -14,14 +14,10 @@
     </div>
 
     <div class="recipient">
-        <strong th:text="${invoice.customer.name}">Max Mustermann GmbH</strong><br>
-        <span th:text="${invoice.customer.street}">Musterstraße 1</span><br>
-        <span th:text="${invoice.customer.zip}">12345</span>
-        <span th:text="${invoice.customer.city}">Musterstadt</span><br>
-        <span th:if="${invoice.customer.country}"
-              th:text="${invoice.customer.country}">
-            Deutschland
-        </span>
+        <strong th:text="${company}">Max Mustermann GmbH</strong><br>
+        <span th:text="${address}">Musterstraße 1</span><br>
+        <span th:text="${zip}">12345</span>
+        <span th:text="${city}">Musterstadt</span>
     </div>
 
     <h1 class="invoice-title">Rechnung</h1>
@@ -29,18 +25,10 @@
     <table class="invoice-meta">
         <tr>
             <td><strong>Rechnungsnummer:</strong></td>
-            <td th:text="${invoice.invoiceNumber}">RE-2026-0001</td>
+            <td th:text="${arNummer}">RE-2026-0001</td>
 
             <td><strong>Rechnungsdatum:</strong></td>
-            <td th:text="${invoice.invoiceDate}">23.06.2026</td>
-        </tr>
-
-        <tr>
-            <td><strong>Leistungsdatum:</strong></td>
-            <td th:text="${invoice.serviceDate}">23.06.2026</td>
-
-            <td><strong>Kundennummer:</strong></td>
-            <td th:text="${invoice.customer.customerNumber}">10001</td>
+            <td th:text="${date}">23.06.2026</td>
         </tr>
     </table>
 
@@ -57,30 +45,24 @@
         <th>Beschreibung</th>
         <th class="text-right">Menge</th>
         <th class="text-right">Einzelpreis</th>
-        <th class="text-right">Gesamtpreis</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr th:each="item, stat : ${invoice.items}">
+    <tr th:each="article, stat : ${articles}">
         <td th:text="${stat.count}">1</td>
 
-        <td th:text="${item.description}">
+        <td th:text="${article.productName}">
             Dienstleistung
         </td>
 
         <td class="text-right"
-            th:text="${item.quantity}">
+            th:text="${article.quantity}">
             1
         </td>
 
         <td class="text-right"
-            th:text="${#numbers.formatDecimal(item.unitPrice,1,2,'COMMA')} + ' €'">
-            100,00 €
-        </td>
-
-        <td class="text-right"
-            th:text="${#numbers.formatDecimal(item.totalPrice,1,2,'COMMA')} + ' €'">
+            th:text="${article.singlePrice} + ' €'">
             100,00 €
         </td>
     </tr>
@@ -92,18 +74,15 @@
         <tr>
             <td>Netto:</td>
             <td class="text-right"
-                th:text="${#numbers.formatDecimal(invoice.netAmount,1,2,'COMMA')} + ' €'">
+                th:text="${gesamtbetragnetto} + ' €'">
                 100,00 €
             </td>
         </tr>
 
         <tr>
-            <td>
-                Umsatzsteuer
-                (<span th:text="${invoice.vatRate}">19</span>%):
-            </td>
+            <td>Umsatzsteuer:</td>
             <td class="text-right"
-                th:text="${#numbers.formatDecimal(invoice.vatAmount,1,2,'COMMA')} + ' €'">
+                th:text="${gesamtbetragtax} + ' €'">
                 19,00 €
             </td>
         </tr>
@@ -111,7 +90,7 @@
         <tr class="total">
             <td>Rechnungsbetrag:</td>
             <td class="text-right"
-                th:text="${#numbers.formatDecimal(invoice.grossAmount,1,2,'COMMA')} + ' €'">
+                th:text="${gesamtbetragbrutto} + ' €'">
                 119,00 €
             </td>
         </tr>
@@ -142,36 +121,6 @@
         Matteo Grado<br>
         Geißeichstr. 29<br>
         70197 Stuttgart
-    </div>
-
-    <div class="company-column">
-        <strong>Steuernummer</strong><br>
-        <span th:text="${invoice.taxNumber}">
-            000/000/00000
-        </span>
-    </div>
-
-    <div class="company-column">
-        <strong>USt-IdNr.</strong><br>
-        <span th:text="${invoice.vatId}">
-            DE123456789
-        </span>
-    </div>
-
-    <div class="company-column">
-        <strong>Bankverbindung</strong><br>
-
-        IBAN:
-        <span th:text="${invoice.iban}">
-            DE00 0000 0000 0000 0000 00
-        </span>
-
-        <br>
-
-        BIC:
-        <span th:text="${invoice.bic}">
-            XXXXXXXX
-        </span>
     </div>
 
 </div>

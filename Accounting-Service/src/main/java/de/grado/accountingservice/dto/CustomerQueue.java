@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class CustomerQueue
 {
+    private long customerId;
     private String companyName;
     private String street;
     private String houseNumber;
