@@ -1,10 +1,12 @@
 package de.grado.documentationservice.config;
 
 import lombok.Getter;
-import org.springframework.context.annotation.Configuration;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Configuration
+@ConfigurationProperties(prefix = "storage.s3")
 @Getter
+@Setter
 public class S3Properties
 {
     private String accessKey;

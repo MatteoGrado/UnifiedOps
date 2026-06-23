@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rechnung</title>
+    <link rel="stylesheet" th:href="@{./OutboundInvoice.css}">
+</head>
+<body>
+
+<div class="header">
+
+    <div class="sender">
+        Matteo Grado · Geißeichstr. 29 · 70197 Stuttgart
+    </div>
+
+    <div class="recipient">
+        <strong th:text="${invoice.customer.name}">Max Mustermann GmbH</strong><br>
+        <span th:text="${invoice.customer.street}">Musterstraße 1</span><br>
+        <span th:text="${invoice.customer.zip}">12345</span>
+        <span th:text="${invoice.customer.city}">Musterstadt</span><br>
+        <span th:if="${invoice.customer.country}"
+              th:text="${invoice.customer.country}">
+            Deutschland
+        </span>
+    </div>
+
+    <h1 class="invoice-title">Rechnung</h1>
+
+    <table class="invoice-meta">
+        <tr>
+            <td><strong>Rechnungsnummer:</strong></td>
+            <td th:text="${invoice.invoiceNumber}">RE-2026-0001</td>
+
+            <td><strong>Rechnungsdatum:</strong></td>
+            <td th:text="${invoice.invoiceDate}">23.06.2026</td>
+        </tr>
+
+        <tr>
+            <td><strong>Leistungsdatum:</strong></td>
+            <td th:text="${invoice.serviceDate}">23.06.2026</td>
+
+            <td><strong>Kundennummer:</strong></td>
+            <td th:text="${invoice.customer.customerNumber}">10001</td>
+        </tr>
+    </table>
+
+</div>
+
+<p>
+    Vielen Dank für Ihren Auftrag. Für die erbrachten Leistungen berechne ich wie folgt:
+</p>
+
+<table class="items">
+    <thead>
+    <tr>
+        <th>Pos.</th>
+        <th>Beschreibung</th>
+        <th class="text-right">Menge</th>
+        <th class="text-right">Einzelpreis</th>
+        <th class="text-right">Gesamtpreis</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item, stat : ${invoice.items}">
+        <td th:text="${stat.count}">1</td>
+
+        <td th:text="${item.description}">
+            Dienstleistung
+        </td>
+
+        <td class="text-right"
+            th:text="${item.quantity}">
+            1
+        </td>
+
+        <td class="text-right"
+            th:text="${#numbers.formatDecimal(item.unitPrice,1,2,'COMMA')} + ' €'">
+            100,00 €
+        </td>
+
+        <td class="text-right"
+            th:text="${#numbers.formatDecimal(item.totalPrice,1,2,'COMMA')} + ' €'">
+            100,00 €
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="summary">
+    <table>
+        <tr>
+            <td>Netto:</td>
+            <td class="text-right"
+                th:text="${#numbers.formatDecimal(invoice.netAmount,1,2,'COMMA')} + ' €'">
+                100,00 €
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Umsatzsteuer
+                (<span th:text="${invoice.vatRate}">19</span>%):
+            </td>
+            <td class="text-right"
+                th:text="${#numbers.formatDecimal(invoice.vatAmount,1,2,'COMMA')} + ' €'">
+                19,00 €
+            </td>
+        </tr>
+
+        <tr class="total">
+            <td>Rechnungsbetrag:</td>
+            <td class="text-right"
+                th:text="${#numbers.formatDecimal(invoice.grossAmount,1,2,'COMMA')} + ' €'">
+                119,00 €
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="payment-terms">
+    <h3>Zahlungsbedingungen</h3>
+
+    <p>
+        Zahlung innerhalb von 14 Tagen mit 2 % Skonto
+        oder innerhalb von 30 Tagen netto ohne Abzug.
+    </p>
+</div>
+
+<div class="footer">
+    <p>Mit freundlichen Grüßen</p>
+
+    <div class="signature">
+        Matteo Grado
+    </div>
+</div>
+
+<div class="company-data">
+
+    <div class="company-column">
+        <strong>Absender</strong><br>
+        Matteo Grado<br>
+        Geißeichstr. 29<br>
+        70197 Stuttgart
+    </div>
+
+    <div class="company-column">
+        <strong>Steuernummer</strong><br>
+        <span th:text="${invoice.taxNumber}">
+            000/000/00000
+        </span>
+    </div>
+
+    <div class="company-column">
+        <strong>USt-IdNr.</strong><br>
+        <span th:text="${invoice.vatId}">
+            DE123456789
+        </span>
+    </div>
+
+    <div class="company-column">
+        <strong>Bankverbindung</strong><br>
+
+        IBAN:
+        <span th:text="${invoice.iban}">
+            DE00 0000 0000 0000 0000 00
+        </span>
+
+        <br>
+
+        BIC:
+        <span th:text="${invoice.bic}">
+            XXXXXXXX
+        </span>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    consul:
+      enabled: false
+
+  datasource:
+    url: jdbc:h2:mem:documentation-service-test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+storage:
+  s3:
+    access-key: test-access-key
+    secret-key: test-secret-key
+    region: eu-central-1
+    bucket: test-bucket

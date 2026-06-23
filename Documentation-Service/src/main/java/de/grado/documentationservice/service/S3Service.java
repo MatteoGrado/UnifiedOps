@@ -72,7 +72,7 @@ public class S3Service
                         .bucket(s3Properties.getBucket())
                         .key(folderName)
                         .build(),
-                RequestBody.empty();
+                RequestBody.empty()
         );
     }
 }
