@@ -5,6 +5,9 @@ import de.grado.accountingservice.dto.CustomerQueue;
 import de.grado.accountingservice.service.CreateOutboundInvoiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +22,18 @@ public class CreateInvoiceController
     private final CreateOutboundInvoiceService createOutboundInvoiceService;
 
     @PostMapping("/create/invoice")
-    public void createInvoice(@RequestBody CreateInvoiceRequest request, CustomerQueue queue)
+    public ResponseEntity<byte[]> createInvoice(@RequestBody CreateInvoiceRequest request, @RequestBody CustomerQueue queue)
     {
-        createOutboundInvoiceService.createInvoice(request, queue);
+        byte[] pdf = createOutboundInvoiceService.createInvoice(request, queue);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"invoice-" +
+                                request.getInvoiceNumber() +
+                                ".pdf\""
+                )
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 }

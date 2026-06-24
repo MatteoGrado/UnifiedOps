@@ -34,7 +34,6 @@ public class CreateOutboundInvoiceService
     private final SpringTemplateEngine templateEngine;
     private final AccountingCustomerRepository accountingCustomerRepository;
 
-    //@RabbitListener(queues = "customer.queue")
     public void updateCustomer(CustomerQueue customerQueue)
     {
         Accounting_Customer customer =
@@ -45,7 +44,7 @@ public class CreateOutboundInvoiceService
         customer.setCustomerId(customerQueue.getCustomerId());
         customer.setCompanyName(customerQueue.getCompanyName());
         customer.setStreet(customerQueue.getStreet());
-        customer.setPostalCode(customerQueue.getPostalCode());
+        customer.setPostalCode(customer.getPostalCode());
         customer.setCity(customerQueue.getCity());
 
         accountingCustomerRepository.save(customer);
@@ -53,8 +52,9 @@ public class CreateOutboundInvoiceService
         log.info("Customer {} updated", customer.getCustomerId());
     }
 
-    public String createInvoice(CreateInvoiceRequest createInvoiceRequest,
-                                CustomerQueue customerQueue)
+    public byte[] createInvoice(
+            CreateInvoiceRequest createInvoiceRequest,
+            CustomerQueue customerQueue)
     {
         Accounting_Customer customer =
                 accountingCustomerRepository
@@ -90,7 +90,7 @@ public class CreateOutboundInvoiceService
 
             byte[] pdfBytes = os.toByteArray();
 
-            String s3Key = uploadInvoice(
+            uploadInvoice(
                     createInvoiceRequest.getInvoiceNumber(),
                     pdfBytes
             );
@@ -100,7 +100,7 @@ public class CreateOutboundInvoiceService
                     createInvoiceRequest.getInvoiceNumber()
             );
 
-            return s3Key;
+            return pdfBytes;
 
         } catch (Exception e) {
             Sentry.captureException(e);
