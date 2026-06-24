@@ -1,6 +1,7 @@
 package de.grado.accountingservice.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import de.grado.accountingservice.config.S3Properties;
 import de.grado.accountingservice.dto.Articles;
 import de.grado.accountingservice.dto.CreateInvoiceRequest;
 import de.grado.accountingservice.dto.CustomerQueue;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
 public class CreateOutboundInvoiceService
 {
     private final S3Client s3Client;
+    private final S3Properties s3Properties;
     private final InvoiceRepository invoiceRepository;
     private final SpringTemplateEngine templateEngine;
     private final AccountingCustomerRepository accountingCustomerRepository;
@@ -49,7 +53,8 @@ public class CreateOutboundInvoiceService
         log.info("Customer {} updated", customer.getCustomerId());
     }
 
-    public byte[] createInvoice(CreateInvoiceRequest createInvoiceRequest, CustomerQueue customerQueue)
+    public String createInvoice(CreateInvoiceRequest createInvoiceRequest,
+                                CustomerQueue customerQueue)
     {
         Accounting_Customer customer =
                 accountingCustomerRepository
@@ -73,8 +78,7 @@ public class CreateOutboundInvoiceService
         context.setVariable("gesamtbetragtax", createInvoiceRequest.getTaxAmount());
         context.setVariable("gesamtbetragbrutto", createInvoiceRequest.getGrossAmount());
 
-        String html =
-                templateEngine.process("rechnung", context);
+        String html = templateEngine.process("rechnung", context);
 
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 
@@ -84,10 +88,49 @@ public class CreateOutboundInvoiceService
             builder.toStream(os);
             builder.run();
 
-            return os.toByteArray();
+            byte[] pdfBytes = os.toByteArray();
+
+            String s3Key = uploadInvoice(
+                    createInvoiceRequest.getInvoiceNumber(),
+                    pdfBytes
+            );
+
+            log.info(
+                    "Invoice {} successfully generated and uploaded to S3",
+                    createInvoiceRequest.getInvoiceNumber()
+            );
+
+            return s3Key;
+
         } catch (Exception e) {
             Sentry.captureException(e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to create invoice PDF", e);
         }
+    }
+
+    private String uploadInvoice(String invoiceNumber, byte[] pdfBytes)
+    {
+        String key = "outbound-invoices/" + invoiceNumber + ".pdf";
+
+        PutObjectRequest putObjectRequest =
+                PutObjectRequest.builder()
+                        .bucket(s3Properties.getBucket())
+                        .key(key)
+                        .contentType("application/pdf")
+                        .build();
+
+        s3Client.putObject(
+                putObjectRequest,
+                RequestBody.fromBytes(pdfBytes)
+        );
+
+        log.info(
+                "Invoice {} uploaded to bucket {} with key {}",
+                invoiceNumber,
+                s3Properties.getBucket(),
+                key
+        );
+
+        return key;
     }
 }
