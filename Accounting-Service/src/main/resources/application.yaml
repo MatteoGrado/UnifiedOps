@@ -28,6 +28,8 @@ spring:
   mail:
     host: localhost
     port: 1025
+    username:
+    password:
     properties:
       mail:
         smtp:
@@ -48,7 +50,7 @@ spring:
         prefer-ip-address: true
 
 server:
-  port: 8083
+  port: 8082
 
 management:
   endpoints:
@@ -78,8 +80,3 @@ sentry:
     enabled: true
     minimum-event-level: error
     minimum-breadcrumb-level: info
-
-app:
-  sentry-test:
-    enabled: ${APP_SENTRY_TEST_ENABLED:false}
-    throw-after-capture: ${APP_SENTRY_TEST_THROW_AFTER_CAPTURE:false}

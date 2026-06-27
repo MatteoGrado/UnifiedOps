@@ -1,6 +1,5 @@
 package de.grado.accountingservice.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -9,7 +8,6 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
-@ConfigurationProperties(prefix = "storage.s3")
 public class S3Config
 {
     @Bean
@@ -24,7 +22,8 @@ public class S3Config
 
         return S3Client.builder()
                 .region(Region.of(props.getRegion()))
-                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .credentialsProvider(
+                        StaticCredentialsProvider.create(credentials))
                 .build();
     }
 }
