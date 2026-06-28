@@ -1,3 +1,21 @@
 spring:
   application:
     name: Payment-Service
+
+  config:
+    import: optional:file:../env.properties
+
+server:
+  port: 8084
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  environment: ${SENTRY_ENVIRONMENT:local}
+  release: ${SENTRY_RELEASE:${spring.application.name}}
+  traces-sample-rate: ${SENTRY_TRACES_SAMPLE_RATE:0.0}
+  send-default-pii: ${SENTRY_SEND_DEFAULT_PII:false}
+  exception-resolver-order: -2147483647
+  logging:
+    enabled: true
+    minimum-event-level: error
+    minimum-breadcrumb-level: info

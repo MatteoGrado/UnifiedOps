@@ -5,7 +5,7 @@ spring:
     import: optional:file:../env.properties
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ShopShare
+    url: jdbc:mysql://localhost:3306/company
     username: DB_Admin
     password: Sumafelo!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -49,7 +49,7 @@ spring:
         prefer-ip-address: true
 
 server:
-  port: 8081
+  port: 8082
 
 management:
   endpoints:
@@ -67,3 +67,15 @@ storage:
     secret-key: ${AWS_SECRET_ACCESS_KEY}
     region: ${AWS_REGION}
     bucket: s3-bucket-doc-service
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  environment: ${SENTRY_ENVIRONMENT:local}
+  release: ${SENTRY_RELEASE:${spring.application.name}}
+  traces-sample-rate: ${SENTRY_TRACES_SAMPLE_RATE:0.0}
+  send-default-pii: ${SENTRY_SEND_DEFAULT_PII:false}
+  exception-resolver-order: -2147483647
+  logging:
+    enabled: true
+    minimum-event-level: error
+    minimum-breadcrumb-level: info

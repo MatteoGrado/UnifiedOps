@@ -1,42 +1,32 @@
 package de.grado.accountingservice.model;
 
-import de.grado.accountingservice.dto.InvoiceStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.UUID;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "invoices")
-@Setter
+@Table(name = "invoice")
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
 public class Invoice
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private Long id;
+
+    private BigInteger sellerId;
 
     private String invoiceNumber;
 
-    private UUID supplierId;
-
-    private LocalDate invoiceDate;
-
-    private LocalDate dueDate;
+    @ManyToOne
+    @JoinColumn(name = "article_number")
+    private Article article;
 
     private BigDecimal netAmount;
-
     private BigDecimal taxAmount;
+    private BigDecimal brutAmount;
 
-    private BigDecimal grossAmount;
-
-    @Enumerated(EnumType.STRING)
-    private InvoiceStatus status;
+    private String paymentConditions;
 }

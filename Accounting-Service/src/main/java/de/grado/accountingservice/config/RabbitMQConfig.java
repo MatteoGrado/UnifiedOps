@@ -29,10 +29,10 @@ public class RabbitMQConfig
     }
 
     @Bean
-    public Binding accountingBinding()
+    public Binding ACCOUNTINGBinding()
     {
         return BindingBuilder
-                .bind(accountingQueue())
+                .bind(accountingExchange())
                 .to(accountingExchange())
                 .with(ACCOUNTING_ROUTING_KEY);
     }
@@ -44,7 +44,8 @@ public class RabbitMQConfig
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter)
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
+                                         MessageConverter messageConverter)
     {
 
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
