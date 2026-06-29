@@ -1,0 +1,19 @@
+package de.grado.accountingservice.service;
+
+import de.grado.accountingservice.repository.InvoiceRepository;
+import de.grado.accountingservice.dto.CreateInitialInvoiceRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class InvoiceService
+{
+    private final InvoiceRepository invoiceRepository;
+
+    public void createInitialInvoice(CreateInitialInvoiceRequest request)
+    {
+    }
+}

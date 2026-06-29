@@ -1,8 +1,6 @@
 package de.grado.accountingservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +13,11 @@ import java.math.BigDecimal;
 public class Article
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String articleNumber;
-    private String articleName;
-    private String title;
-    private String description;
+    private String name;
 
-    //Counts for one item!
-    private BigDecimal netPrice;
-    private BigDecimal tax;
-    private BigDecimal brutPrice;
+    private BigDecimal price;
 }
