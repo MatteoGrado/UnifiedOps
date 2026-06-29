@@ -2,7 +2,7 @@ package de.grado.accountingservice.controller;
 
 
 import de.grado.accountingservice.service.InvoiceService;
-import de.grado.accountingservice.sto.CreateInitialInvoiceRequest;
+import de.grado.accountingservice.dto.CreateInitialInvoiceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

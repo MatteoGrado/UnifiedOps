@@ -1,4 +1,4 @@
-package de.grado.accountingservice.sto;
+package de.grado.accountingservice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
