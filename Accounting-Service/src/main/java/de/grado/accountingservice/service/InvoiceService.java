@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -13,7 +16,8 @@ public class InvoiceService
 {
     private final InvoiceRepository invoiceRepository;
 
-    public void createInitialInvoice(CreateInitialInvoiceRequest request)
+    public Map<String, Objects> createInitialInvoice(CreateInitialInvoiceRequest request)
     {
+        return Map.of();
     }
 }
