@@ -4,16 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "initial_invoice")
+@Table(name = "customer_snapshot")
 @Getter
 @Setter
-public class InitialInvoice
+public class CustomerSnapshot
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +26,4 @@ public class InitialInvoice
     private String country;
     private String state;
     private String paymentConditions;
-
-    private String invoiceNumber;
-    private LocalDate invoiceDate;
-    private LocalDate dueDate;
-
-    @OneToMany(
-            mappedBy = "invoice",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<InvoicePosition> positions = new ArrayList<>();
 }

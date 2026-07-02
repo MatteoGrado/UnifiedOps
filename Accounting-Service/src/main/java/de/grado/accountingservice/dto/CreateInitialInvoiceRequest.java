@@ -4,24 +4,29 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 public class CreateInitialInvoiceRequest
 {
     private String invoiceNumber;
-    private String productNumber;
     private LocalDate invoiceDate;
     private LocalDate dueDate;
+    private String paymentConditions;
 
-    private BigInteger customerId;
+    private List<InvoicePositionRequest> positions = new ArrayList<>();
 
-    private InvoiceItem invoiceItem;
-
-    private int quantity;
-    private BigDecimal netAmount;
-    private BigDecimal taxAmount;
-    private BigDecimal brutAmount;
+    @Getter
+    @Setter
+    public static class InvoicePositionRequest
+    {
+        private String articleNumber;
+        private Integer quantity;
+        private BigDecimal unitPrice;
+        private BigDecimal discount;
+        private BigDecimal vatRate;
+    }
 }

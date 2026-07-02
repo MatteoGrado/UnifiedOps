@@ -30,6 +30,7 @@ There is no root Maven aggregator at the moment. Run Maven commands from the ind
 - Do not commit real secrets. Use local ignored files such as `.env` or `env.properties`, and keep committed examples sanitized.
 - Before modifying files with existing uncommitted changes, inspect them first and preserve user edits.
 - For S3 integration, prefer AWS SDK request/response DTOs and stream-based uploads/downloads over `java.io.File` in controller contracts.
+- Only modify the files I explicitly name in my request. Do not touch additional files unless it is necessary to complete the task; if that is the case, ask me first.
 
 ## Known Current State
 
