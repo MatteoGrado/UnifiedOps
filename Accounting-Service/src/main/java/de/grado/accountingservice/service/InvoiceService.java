@@ -6,6 +6,7 @@ import de.grado.accountingservice.model.CustomerSnapshot;
 import de.grado.accountingservice.model.InitialInvoice;
 import de.grado.accountingservice.model.InvoicePosition;
 import de.grado.accountingservice.repository.CustomerSnapshotRepository;
+import de.grado.accountingservice.repository.InitialInvoiceRepository;
 import de.grado.accountingservice.repository.InvoiceRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class InvoiceService
 {
     private final InvoiceRepository invoiceRepository;
     private final CustomerSnapshotRepository customerSnapshotRepository;
+    private final InitialInvoiceRepository initialInvoiceRepository;
 
     //@RabbitListener(queues = "order.queue")
     private void getCustomerInformation(OrderEvent event)
@@ -85,5 +87,15 @@ public class InvoiceService
                 "customer", customer,
                 "positions", request.getPositions()
         );
+    }
+
+    public List<InitialInvoice> getInvoices()
+    {
+        return initialInvoiceRepository.findAll();
+    }
+
+    public InitialInvoice getInitialInvoice(String invoiceNumber)
+    {
+        return initialInvoiceRepository.findByInvoiceNumber(invoiceNumber);
     }
 }

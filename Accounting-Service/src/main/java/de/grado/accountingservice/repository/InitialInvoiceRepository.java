@@ -9,4 +9,5 @@ import java.math.BigInteger;
 @Repository
 public interface InitialInvoiceRepository extends JpaRepository<InitialInvoice, BigInteger>
 {
+    InitialInvoice findByInvoiceNumber(String invoiceNumber);
 }
