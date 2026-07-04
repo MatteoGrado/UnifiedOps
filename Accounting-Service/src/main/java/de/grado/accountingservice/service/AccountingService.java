@@ -19,8 +19,39 @@ public class AccountingService
     private final JournalEntryRepository journalEntryRepository;
     private final JournalEntryLineRepository journalEntryLineRepository;
 
-    @RabbitListener(queues = "accounting.queue")
-    public void createJournalEntry()
+    public void bookPaidInitialInvoice()
     {
+        /*
+        * TODO:
+        *  Book in initialInvoice and set Status to Done.
+        */
+    }
+
+    public void bookDraftedInitialInvoice()
+    {
+        /*
+        * TODO:
+        *  Book in initialInvoice
+        *   Trigger Event for Payment check
+        *    Book again if paid
+        */
+    }
+
+    public void bookPaidInvoice()
+    {
+        /*
+         * TODO:
+         *  Book in invoice and set Status to Done.
+         */
+    }
+
+    public void bookDraftedInvoice()
+    {
+        /*
+         * TODO:
+         *  Book in invoice
+         *   Trigger Event for Payment check
+         *    Book again if paid
+         */
     }
 }

@@ -42,5 +42,5 @@ public class InitialInvoice
     )
     private List<InitialInvoicePosition> positions = new ArrayList<>();
 
-    private Status invoiceStatus;
+    private Status Status;
 }
