@@ -1,16 +1,13 @@
 package de.grado.accountingservice.controller;
 
-
-import de.grado.accountingservice.event.OrderEvent;
-import de.grado.accountingservice.model.InitialInvoice;
+import de.grado.accountingservice.dto.InvoiceRequest;
+import de.grado.accountingservice.model.Invoice;
 import de.grado.accountingservice.service.InvoiceService;
-import de.grado.accountingservice.dto.CreateInitialInvoiceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/accounting")
@@ -18,29 +15,23 @@ import java.util.Map;
 @Slf4j
 public class InvoiceController
 {
-    private final InvoiceService invoiceServervice;
+    private final InvoiceService invoiceService;
 
-    @GetMapping("/getInitialInvoice/{invoiceNumber}")
-    public InitialInvoice getInvoice(@PathVariable String invoiceNumber)
+    @GetMapping("/getInvoices")
+    public List<Invoice> getInvoices()
     {
-        return invoiceServervice.getInitialInvoice(invoiceNumber);
+        return invoiceService.getInvoices();
     }
 
-    @GetMapping("/getInitialInvoices")
-    public List<InitialInvoice> getInvoices()
+    @GetMapping("/getInvoice/{invoiceNumber}")
+    public Invoice getInvoice(@PathVariable String invoiceNumber)
     {
-        return invoiceServervice.getInvoices();
+        return invoiceService.getInvoice(invoiceNumber);
     }
 
     @PostMapping("/readInvoice")
-    public void readInvoice()
+    public Invoice readInvoice(@RequestBody InvoiceRequest invoiceRequest)
     {
-        //TODO: Only use when we receive a new product
-    }
-
-    @PostMapping("/createInitialInvoice")
-    public Map<String, Object> createInitialInvoice(@RequestBody CreateInitialInvoiceRequest request, OrderEvent event)
-    {
-        return invoiceServervice.createInitialInvoice(request, event);
+        return invoiceService.readInvoice(invoiceRequest);
     }
 }

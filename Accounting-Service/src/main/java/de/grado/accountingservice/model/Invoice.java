@@ -1,11 +1,13 @@
 package de.grado.accountingservice.model;
 
+import de.grado.accountingservice.dto.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "invoice")
@@ -14,19 +16,21 @@ import java.math.BigInteger;
 public class Invoice
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigInteger sellerId;
+    private String sellerId;
 
     private String invoiceNumber;
-
-    @ManyToOne
-    @JoinColumn(name = "article_number")
-    private Article article;
 
     private BigDecimal netAmount;
     private BigDecimal taxAmount;
     private BigDecimal brutAmount;
 
     private String paymentConditions;
+
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InvoicePosition> positions = new ArrayList<>();
+
+    private Status status;
 }

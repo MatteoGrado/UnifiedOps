@@ -1,5 +1,6 @@
 package de.grado.accountingservice.controller;
 
+import de.grado.accountingservice.service.AccountingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AccountingController
 {
+    private final AccountingService accountingService;
+
     @GetMapping("/getJournal")
     public void getJournal()
     {

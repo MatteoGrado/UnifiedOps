@@ -1,5 +1,6 @@
 package de.grado.accountingservice.model;
 
+import de.grado.accountingservice.dto.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,5 +40,7 @@ public class InitialInvoice
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<InvoicePosition> positions = new ArrayList<>();
+    private List<InitialInvoicePosition> positions = new ArrayList<>();
+
+    private Status invoiceStatus;
 }

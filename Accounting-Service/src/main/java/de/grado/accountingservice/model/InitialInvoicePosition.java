@@ -7,18 +7,18 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "invoice_position")
+@Table(name = "initial_invoice_position")
 @Getter
 @Setter
-public class InvoicePosition
-{
+public class InitialInvoicePosition {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "invoice_id", nullable = false)
-    private Invoice invoice;
+    private InitialInvoice invoice;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "article_id", nullable = false)
