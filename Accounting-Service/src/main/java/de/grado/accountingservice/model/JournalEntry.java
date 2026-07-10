@@ -14,6 +14,7 @@ import java.util.List;
 public class JournalEntry
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL)

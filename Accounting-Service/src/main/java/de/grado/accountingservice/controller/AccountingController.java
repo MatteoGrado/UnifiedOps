@@ -1,9 +1,14 @@
 package de.grado.accountingservice.controller;
 
+import de.grado.accountingservice.model.JournalEntry;
 import de.grado.accountingservice.service.AccountingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/accounting")
@@ -13,28 +18,33 @@ public class AccountingController
 {
     private final AccountingService accountingService;
 
-    @GetMapping("/getJournal")
-    public void getJournal()
+    @GetMapping("/journal")
+    public List<JournalEntry> getJournal()
     {
+        return accountingService.getJournal();
     }
 
-    @PostMapping("/create/journalEntry")
-    public void createJournalEntry()
+    @PostMapping("/journal")
+    public JournalEntry createJournalEntry(@RequestBody JournalEntry journalEntry)
     {
+        return accountingService.createJournalEntry(journalEntry);
     }
 
-    @PostMapping("/create/balanceSheet")
-    public void createBalanceSheet()
+    @PostMapping("/balance-sheet")
+    public Map<Integer, BigDecimal> createBalanceSheet()
     {
+        return accountingService.createBalanceSheet();
     }
 
-    @GetMapping("/getBalanceSheet")
-    public void getBalanceSheet()
+    @GetMapping("/balance-sheet")
+    public Map<Integer, BigDecimal> getBalanceSheet()
     {
+        return accountingService.getBalanceSheet();
     }
 
-    @PutMapping("/updateBalanceSheet")
-    public void updateBalanceSheet()
+    @PutMapping("/balance-sheet")
+    public Map<Integer, BigDecimal> updateBalanceSheet()
     {
+        return accountingService.updateBalanceSheet();
     }
 }

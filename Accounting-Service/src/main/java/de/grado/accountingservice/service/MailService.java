@@ -3,10 +3,8 @@ package de.grado.accountingservice.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.MailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
-import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,14 +19,13 @@ public class MailService
     {
         String from = "matteo.grado@UnifiedOps.com";
 
-        MimeMailMessage message = new MimeMailMessage();
+        SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
+        message.setText(String.valueOf(bodyData));
 
-        //message.setText();
-
-        mailSender.send(message.getMimeMessage());
+        mailSender.send(message);
     }
 }

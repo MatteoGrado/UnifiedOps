@@ -18,7 +18,7 @@ public class InitialInvoice
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String customerId;
     private String companyName;
@@ -42,5 +42,6 @@ public class InitialInvoice
     )
     private List<InitialInvoicePosition> positions = new ArrayList<>();
 
-    private Status Status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

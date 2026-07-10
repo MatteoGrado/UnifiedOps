@@ -24,6 +24,12 @@ public class InvoicePosition
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
+    @Column
+    private Integer accountNumber;
+
+    @Column
+    private String accountName;
+
     @Column(nullable = false)
     private Integer quantity;
 
@@ -35,4 +41,10 @@ public class InvoicePosition
 
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal vatRate;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal debit;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal credit;
 }

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigInteger;
-
 @Entity
 @Table(name = "customer_snapshot")
 @Getter
@@ -14,7 +12,7 @@ public class CustomerSnapshot
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String customerId;
     private String companyName;

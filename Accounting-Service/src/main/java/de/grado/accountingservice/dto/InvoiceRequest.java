@@ -26,9 +26,13 @@ public class InvoiceRequest
     public static class InvoicePositionRequest
     {
         private String articleNumber;
+        private Integer accountNumber;
+        private String accountName;
         private Integer quantity;
         private BigDecimal unitPrice;
         private BigDecimal discount;
         private BigDecimal vatRate;
+        private BigDecimal debit;
+        private BigDecimal credit;
     }
 }

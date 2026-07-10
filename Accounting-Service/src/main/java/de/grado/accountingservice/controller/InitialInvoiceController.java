@@ -5,7 +5,9 @@ import de.grado.accountingservice.event.OrderEvent;
 import de.grado.accountingservice.model.InitialInvoice;
 import de.grado.accountingservice.service.InitialInvoiceService;
 import de.grado.accountingservice.dto.CreateInitialInvoiceRequest;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,28 +15,36 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/accounting")
+@RequestMapping("/api/accounting/initial-invoices")
 @RequiredArgsConstructor
 @Slf4j
 public class InitialInvoiceController
 {
     private final InitialInvoiceService initialInvoiceService;
 
-    @GetMapping("/getInitialInvoice/{invoiceNumber}")
+    @GetMapping("/{invoiceNumber}")
     public InitialInvoice getInvoice(@PathVariable String invoiceNumber)
     {
         return initialInvoiceService.getInitialInvoice(invoiceNumber);
     }
 
-    @GetMapping("/getInitialInvoices")
+    @GetMapping
     public List<InitialInvoice> getInvoices()
     {
         return initialInvoiceService.getInitialInvoices();
     }
 
-    @PostMapping("/createInitialInvoice")
-    public Map<String, Object> createInitialInvoice(@RequestBody CreateInitialInvoiceRequest request, OrderEvent event)
+    @PostMapping
+    public Map<String, Object> createInitialInvoice(@RequestBody CreateInitialInvoiceCommand command)
     {
-        return initialInvoiceService.createInitialInvoice(request, event);
+        return initialInvoiceService.createInitialInvoice(command.getRequest(), command.getEvent());
+    }
+
+    @Getter
+    @Setter
+    public static class CreateInitialInvoiceCommand
+    {
+        private CreateInitialInvoiceRequest request;
+        private OrderEvent event;
     }
 }

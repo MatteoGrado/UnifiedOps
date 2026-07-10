@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounting")
+@RequestMapping("/api/accounting/invoices")
 @RequiredArgsConstructor
 @Slf4j
 public class InvoiceController
 {
     private final InvoiceService invoiceService;
 
-    @GetMapping("/getInvoices")
+    @GetMapping
     public List<Invoice> getInvoices()
     {
         return invoiceService.getInvoices();
     }
 
-    @GetMapping("/getInvoice/{invoiceNumber}")
+    @GetMapping("/{invoiceNumber}")
     public Invoice getInvoice(@PathVariable String invoiceNumber)
     {
         return invoiceService.getInvoice(invoiceNumber);
     }
 
-    @PostMapping("/readInvoice")
+    @PostMapping
     public Invoice readInvoice(@RequestBody InvoiceRequest invoiceRequest)
     {
         return invoiceService.readInvoice(invoiceRequest);

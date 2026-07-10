@@ -4,11 +4,10 @@ import de.grado.accountingservice.model.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigInteger;
 import java.util.Optional;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, BigInteger>
+public interface ArticleRepository extends JpaRepository<Article, Long>
 {
     Optional<Article> findByArticleNumber(String articleNumber);
 }

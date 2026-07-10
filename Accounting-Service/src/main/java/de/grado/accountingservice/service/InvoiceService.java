@@ -1,6 +1,7 @@
 package de.grado.accountingservice.service;
 
 import de.grado.accountingservice.dto.InvoiceRequest;
+import de.grado.accountingservice.dto.Status;
 import de.grado.accountingservice.model.Article;
 import de.grado.accountingservice.model.Invoice;
 import de.grado.accountingservice.model.InvoicePosition;
@@ -31,6 +32,7 @@ public class InvoiceService
         invoice.setInvoiceNumber(invoiceRequest.getInvoiceNumber());
         invoice.setSellerId(invoiceRequest.getSellerId());
         invoice.setPaymentConditions(invoiceRequest.getPaymentConditions());
+        invoice.setStatus(Status.DRAFT);
 
         List<InvoicePosition> positions = new ArrayList<>();
         for (InvoiceRequest.InvoicePositionRequest positionRequest : invoiceRequest.getPositions()) {
@@ -40,10 +42,14 @@ public class InvoiceService
             InvoicePosition position = new InvoicePosition();
             position.setInvoice(invoice);
             position.setArticle(article);
+            position.setAccountNumber(positionRequest.getAccountNumber());
+            position.setAccountName(positionRequest.getAccountName());
             position.setQuantity(positionRequest.getQuantity());
             position.setUnitPrice(positionRequest.getUnitPrice());
             position.setDiscount(positionRequest.getDiscount());
             position.setVatRate(positionRequest.getVatRate());
+            position.setDebit(positionRequest.getDebit());
+            position.setCredit(positionRequest.getCredit());
             positions.add(position);
         }
 

@@ -26,11 +26,11 @@ public class SchedulerComponent
     public void processInvoices()
     {
         List<Invoice> invoices =
-                invoiceRepository.findByStatus(
+                invoiceRepository.findByStatusIn(
                         List.of(Status.DRAFT, Status.PAID));
 
         List<InitialInvoice> initialInvoices =
-                initialInvoiceRepository.findByStatus(
+                initialInvoiceRepository.findByStatusIn(
                         List.of(Status.DRAFT, Status.PAID));
 
         for (Invoice invoice : invoices) {

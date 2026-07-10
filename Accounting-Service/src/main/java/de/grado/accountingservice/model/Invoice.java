@@ -32,5 +32,6 @@ public class Invoice
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoicePosition> positions = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 }
