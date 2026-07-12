@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AccountingService
         return journalEntryRepository.save(journalEntry);
     }
 
-    public Map<Integer, java.math.BigDecimal> getBalanceSheet()
+    public Map<Integer, BigDecimal> getBalanceSheet()
     {
         return buildBalanceSheet();
     }
